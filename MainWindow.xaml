@@ -1,0 +1,124 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BarCheck"
+        xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="BarCheck.MainWindow"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            
+
+            <Style x:Key="AnimatedSwitch" TargetType="{x:Type ToggleButton}">
+                
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="#CF2804" />
+                <Setter Property="BorderBrush" Value="#EAEAEB" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Viewbox Stretch="Uniform">
+                                <Canvas Name="Layer_1" Width="20" Height="20" Canvas.Left="10" Canvas.Top="0">
+                                    <Ellipse  Canvas.Left="0" Width="20" Height="20" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.5"/>
+                                    <Ellipse  Canvas.Left="15" Width="20" Height="20" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.5"/>
+                                    <Border Canvas.Left="10" Width="15" Height="20" Name="rect416927" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0.5,0,0.5"/>
+                                    <Ellipse x:Name="ellipse"  Canvas.Left="0" Width="20" Height="20" Fill="White" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.3">
+                                        <Ellipse.RenderTransform>
+                                            <TranslateTransform X="0" Y="0" />
+                                        </Ellipse.RenderTransform>
+                                        <Ellipse.BitmapEffect>
+                                            <DropShadowBitmapEffect Softness="0.1" ShadowDepth="0.7" Direction="270" Color="#BBBBBB"/>
+                                        </Ellipse.BitmapEffect>
+                                    </Ellipse>
+                                </Canvas>
+                            </Viewbox>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True" >
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#52D468" Duration="0:0:0.2" />
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#41C955" Duration="0:0:0.2" />
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ellipse">
+                                                    <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                    <SplineDoubleKeyFrame KeyTime="0:0:0.4" Value="15" KeySpline="0, 1, 0.6, 1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#CF2804" Duration="0:0:0.2" />
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#EAEAEB" Duration="0:0:0.2" />
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ellipse">
+                                                    <SplineDoubleKeyFrame KeyTime="0" Value="15"/>
+                                                    <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0" KeySpline="0, 0.5, 0.5, 1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                    <!--<Trigger.Property></Trigger.Property>
+                                    <Trigger.Setters-->
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top" RibbonStyle="Office2010">
+                <dxr:RibbonControl.ApplicationMenu>
+                    <dxr:BackstageViewControl>
+                        <dxr:BackstageTabItem Content="Tab 1">
+                            <Grid/>
+                        </dxr:BackstageTabItem>
+                        <dxr:BackstageButtonItem Content="Close" Glyph="{dx:DXImage Image=Close_32x32.png}"/>
+                    </dxr:BackstageViewControl>
+                </dxr:RibbonControl.ApplicationMenu>
+                <dxr:RibbonDefaultPageCategory>
+                    <dxr:RibbonPage Caption="Page 1">
+                        <dxr:RibbonPageGroup Caption="Apply Rules" Tag="100">
+                            <!--<dxb:BarButtonItem x:Name="BiApplyRule" Content="Apply Rules" Command="{Binding ShowRuleViewCommand}"
+                                                       Glyph="{dx:DXImage Image=Customization_16x16.png}" LargeGlyph="{dx:DXImage Image=Customization_32x32.png}"/>-->
+                            <dxb:BarCheckItem x:Name="BiApplyRule"  BarItemDisplayMode="Content"  
+                              IsChecked="{Binding IsAppliedPanelRule,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                             
+                              Command="{Binding ElementName=MyWindow, Path=DataContext.CheckedCommand}" 
+                              DataContext="{Binding ElementName=MyWindow, Path=DataContext}" >
+
+                                <dxb:BarCheckItem.ContentTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton Style="{StaticResource AnimatedSwitch}" Height="15" Width="50" Margin="20">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="Checked" Command="{Binding Path=DataContext.CheckedShowRuleCommand,  Mode=TwoWay ,NotifyOnSourceUpdated=True}" PassEventArgsToCommand="True" />
+                                                <dxmvvm:EventToCommand EventName="Unchecked" Command= "{Binding Path=DataContext.UnCheckedShowRuleCommand, Mode=TwoWay ,NotifyOnSourceUpdated=True}" PassEventArgsToCommand="True" />
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </ToggleButton>
+                                    </DataTemplate>
+
+                                </dxb:BarCheckItem.ContentTemplate>
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EventToCommand EventName="CheckedChanged"  Command="{Binding CheckedShowRuleCommand}"  PassEventArgsToCommand="True"/>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarCheckItem>
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <Grid/>
+        </DockPanel>
+
+    </Grid>
+</Window>
